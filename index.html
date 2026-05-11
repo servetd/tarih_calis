@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1a1a2e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="İnkılap">
+<meta name="description" content="8. Sınıf T.C. İnkılap Tarihi — Kavramlar, olaylar ve sınavlarla LGS hazırlık uygulaması">
+<title>8. Sınıf İnkılap Tarihi – Öğrenme Uygulaması</title>
+<style>
+  :root {
+    --red: #c0392b; --red2: #e74c3c; --gold: #f39c12; --gold2: #f1c40f;
+    --dark: #1a1a2e; --card: #16213e; --card2: #0f3460; --text: #eef2ff;
+    --text2: #a8b2d8; --green: #27ae60; --green2: #2ecc71;
+    --blue: #2980b9; --blue2: #3498db; --purple: #8e44ad;
+    --radius: 14px; --shadow: 0 8px 32px rgba(0,0,0,.45);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--dark); color: var(--text); font-family: 'Segoe UI', sans-serif; min-height: 100vh; }
+
+  /* ── NAV ── */
+  nav { background: linear-gradient(135deg,#8b0000,var(--card2)); padding: 0 24px;
+    display: flex; align-items: center; gap: 8px; height: 58px;
+    box-shadow: 0 2px 16px rgba(0,0,0,.5); position: sticky; top: 0; z-index: 100; }
+  .nav-logo { font-size: 22px; font-weight: 800; color: var(--gold2); letter-spacing: 1px; flex: 1; }
+  .nav-logo span { color: #fff; }
+  .nav-btn { background: none; border: none; color: var(--text2); font-size: 13px; cursor: pointer;
+    padding: 8px 14px; border-radius: 8px; transition: all .2s; display: flex; align-items: center;
+    flex-direction: row; gap: 6px; white-space: nowrap; }
+  .nav-btn:hover, .nav-btn.active { background: rgba(255,255,255,.15); color: #fff; }
+  .nav-btn .nb-icon { font-size: 18px; }
+
+  /* ── PAGES ── */
+  .page { display: none; padding: 24px; max-width: 1100px; margin: 0 auto; }
+  .page.active { display: block; }
+
+  /* ── DASHBOARD ── */
+  .dash-header { text-align: center; padding: 32px 0 16px; }
+  .dash-header h1 { font-size: 2rem; font-weight: 800; }
+  .dash-header h1 span { color: var(--gold2); }
+  .dash-sub { color: var(--text2); margin-top: 8px; font-size: 15px; }
+  .stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin: 24px 0; }
+  .stat-card { background: var(--card); border-radius: var(--radius); padding: 20px 16px; text-align: center; border: 1px solid rgba(255,255,255,.07); }
+  .stat-num { font-size: 2.2rem; font-weight: 800; color: var(--gold2); }
+  .stat-lbl { font-size: 12px; color: var(--text2); margin-top: 4px; }
+  .units-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+  .unit-card { background: var(--card); border-radius: var(--radius); padding: 20px; cursor: pointer;
+    border: 2px solid transparent; transition: all .25s; position: relative; overflow: hidden; }
+  .unit-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
+  .unit-card:hover { border-color: rgba(255,255,255,.2); transform: translateY(-3px); box-shadow: var(--shadow); }
+  .unit-card.u1::before { background: #e74c3c; } .unit-card.u2::before { background: #e67e22; }
+  .unit-card.u3::before { background: #f1c40f; } .unit-card.u4::before { background: #27ae60; }
+  .unit-card.u5::before { background: #2980b9; } .unit-card.u6::before { background: #8e44ad; }
+  .unit-card.u7::before { background: #1abc9c; }
+  .unit-num { font-size: 11px; color: var(--text2); text-transform: uppercase; letter-spacing: 1px; }
+  .unit-title { font-size: 15px; font-weight: 700; margin: 6px 0 12px; }
+  .unit-meta { display: flex; gap: 12px; font-size: 12px; color: var(--text2); }
+  .unit-meta span { display: flex; align-items: center; gap: 4px; }
+  .prog-bar-wrap { margin-top: 12px; background: rgba(255,255,255,.08); border-radius: 100px; height: 6px; }
+  .prog-bar { height: 6px; border-radius: 100px; transition: width .6s ease; }
+  .prog-pct { font-size: 11px; color: var(--text2); margin-top: 4px; text-align: right; }
+
+  /* ── FLASHCARDS ── */
+  .fc-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+  .fc-header h2 { font-size: 1.3rem; font-weight: 700; flex: 1; }
+  .fc-filter { display: flex; gap: 8px; flex-wrap: wrap; }
+  .fc-filter button { background: var(--card); border: 1px solid rgba(255,255,255,.1); color: var(--text2);
+    padding: 6px 14px; border-radius: 100px; font-size: 12px; cursor: pointer; transition: all .2s; }
+  .fc-filter button.active { background: var(--red); border-color: var(--red); color: #fff; }
+  .fc-progress-info { display: flex; justify-content: space-between; color: var(--text2); font-size: 13px; margin-bottom: 12px; }
+  .fc-progress-bar { background: rgba(255,255,255,.08); border-radius: 100px; height: 8px; margin-bottom: 24px; }
+  .fc-pb-inner { height: 8px; border-radius: 100px; background: linear-gradient(90deg,var(--red),var(--gold)); transition: width .4s; }
+  .card-scene { perspective: 1000px; height: 280px; max-width: 600px; margin: 0 auto 20px; cursor: pointer; }
+  .card-inner { width: 100%; height: 100%; transition: transform .6s; transform-style: preserve-3d; position: relative; }
+  .card-scene.flipped .card-inner { transform: rotateY(180deg); }
+  .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+    border-radius: 18px; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; padding: 32px; text-align: center; box-shadow: var(--shadow); }
+  .card-front { background: linear-gradient(135deg,var(--card),var(--card2)); border: 1px solid rgba(255,255,255,.1); }
+  .card-back { background: linear-gradient(135deg,var(--card2),#1a4a6e); transform: rotateY(180deg); border: 1px solid rgba(255,255,255,.1); }
+  .card-tag { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold2);
+    background: rgba(243,156,18,.15); padding: 4px 12px; border-radius: 100px; margin-bottom: 16px; }
+  .card-term { font-size: 2rem; font-weight: 800; color: var(--text); }
+  .card-hint { font-size: 12px; color: var(--text2); margin-top: 12px; }
+  .card-meaning { font-size: 1.1rem; line-height: 1.6; color: var(--text); }
+  .card-actions { display: flex; gap: 12px; justify-content: center; margin-top: 8px; }
+  .btn-know { background: var(--green); } .btn-unknown { background: var(--red); } .btn-skip { background: var(--card2); }
+  .card-actions button { border: none; color: #fff; padding: 12px 28px; border-radius: 10px;
+    font-size: 14px; font-weight: 600; cursor: pointer; transition: all .2s; }
+  .card-actions button:hover { filter: brightness(1.2); transform: translateY(-2px); }
+  .fc-nav { display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 8px; }
+  .fc-nav button { background: var(--card); border: 1px solid rgba(255,255,255,.1); color: var(--text);
+    width: 40px; height: 40px; border-radius: 50%; font-size: 18px; cursor: pointer; transition: all .2s; }
+  .fc-nav button:hover { background: var(--card2); }
+  .fc-counter { font-size: 14px; color: var(--text2); min-width: 80px; text-align: center; }
+
+  /* ── QUIZ ── */
+  .quiz-setup { max-width: 550px; margin: 40px auto; text-align: center; }
+  .quiz-setup h2 { font-size: 1.5rem; margin-bottom: 8px; }
+  .quiz-setup p { color: var(--text2); margin-bottom: 24px; }
+  .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+  .quiz-opt-card { background: var(--card); border: 2px solid transparent; border-radius: var(--radius);
+    padding: 16px; cursor: pointer; transition: all .2s; text-align: left; }
+  .quiz-opt-card:hover { border-color: var(--gold); }
+  .quiz-opt-card.selected { border-color: var(--gold2); background: rgba(241,196,15,.1); }
+  .quiz-opt-card .qoc-icon { font-size: 24px; } .quiz-opt-card .qoc-title { font-weight: 700; margin: 6px 0 2px; }
+  .quiz-opt-card .qoc-desc { font-size: 12px; color: var(--text2); }
+  .btn-primary { background: linear-gradient(135deg,var(--red),#a93226); border: none; color: #fff;
+    padding: 14px 36px; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all .2s; }
+  .btn-primary:hover { filter: brightness(1.15); transform: translateY(-2px); }
+  .quiz-question-area { max-width: 680px; margin: 0 auto; }
+  .quiz-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .quiz-qnum { font-size: 13px; color: var(--text2); }
+  .quiz-score-live { font-size: 13px; color: var(--gold2); font-weight: 700; }
+  .quiz-bar { background: rgba(255,255,255,.08); border-radius: 100px; height: 6px; margin-bottom: 28px; }
+  .quiz-bar-fill { height: 6px; border-radius: 100px; background: linear-gradient(90deg,var(--red2),var(--gold)); transition: width .4s; }
+  .quiz-q { font-size: 1.15rem; font-weight: 600; line-height: 1.55; margin-bottom: 24px;
+    background: var(--card); padding: 20px; border-radius: var(--radius); border-left: 4px solid var(--gold); }
+  .quiz-choices { display: grid; gap: 10px; }
+  .quiz-choice { background: var(--card); border: 2px solid rgba(255,255,255,.08); border-radius: 12px;
+    padding: 14px 18px; cursor: pointer; transition: all .2s; font-size: 14px; text-align: left; color: var(--text); }
+  .quiz-choice:hover:not(:disabled) { border-color: var(--blue2); background: rgba(52,152,219,.1); }
+  .quiz-choice.correct { border-color: var(--green2); background: rgba(46,204,113,.15); color: var(--green2); }
+  .quiz-choice.wrong { border-color: var(--red2); background: rgba(231,76,60,.15); color: var(--red2); }
+  .quiz-choice:disabled { cursor: default; }
+  .quiz-explanation { margin-top: 12px; padding: 12px 16px; background: rgba(243,156,18,.1);
+    border-radius: 10px; font-size: 13px; color: var(--gold2); border-left: 3px solid var(--gold); display: none; }
+  .quiz-next-btn { margin-top: 20px; }
+  .quiz-result { text-align: center; max-width: 500px; margin: 40px auto; }
+  .result-circle { width: 140px; height: 140px; border-radius: 50%; margin: 0 auto 20px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-size: 2.5rem; font-weight: 800; border: 6px solid; }
+  .result-circle.excellent { border-color: var(--green2); color: var(--green2); background: rgba(46,204,113,.1); }
+  .result-circle.good { border-color: var(--gold2); color: var(--gold2); background: rgba(241,196,15,.1); }
+  .result-circle.poor { border-color: var(--red2); color: var(--red2); background: rgba(231,76,60,.1); }
+  .result-breakdown { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 24px 0; }
+  .rb-item { background: var(--card); border-radius: 12px; padding: 16px; text-align: center; }
+  .rb-num { font-size: 1.8rem; font-weight: 800; }
+  .rb-lbl { font-size: 11px; color: var(--text2); margin-top: 4px; }
+
+  /* ── TIMELINE ── */
+  .tl-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+  .tl-header h2 { font-size: 1.3rem; font-weight: 700; flex: 1; }
+  .tl-filter { display: flex; gap: 8px; flex-wrap: wrap; }
+  .tl-filter button { background: var(--card); border: 1px solid rgba(255,255,255,.1); color: var(--text2);
+    padding: 6px 14px; border-radius: 100px; font-size: 12px; cursor: pointer; transition: all .2s; }
+  .tl-filter button.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .tl-search { background: var(--card); border: 1px solid rgba(255,255,255,.1); color: var(--text);
+    padding: 8px 14px; border-radius: 10px; font-size: 13px; width: 220px; }
+  .timeline { position: relative; padding-left: 32px; }
+  .timeline::before { content: ''; position: absolute; left: 10px; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,.1); }
+  .tl-item { position: relative; margin-bottom: 20px; cursor: pointer; }
+  .tl-dot { position: absolute; left: -27px; top: 8px; width: 14px; height: 14px; border-radius: 50%;
+    border: 2px solid; transition: transform .2s; }
+  .tl-item:hover .tl-dot { transform: scale(1.4); }
+  .tl-body { background: var(--card); border-radius: 12px; padding: 14px 16px;
+    border: 1px solid rgba(255,255,255,.06); transition: all .2s; border-left: 3px solid; }
+  .tl-item:hover .tl-body { background: var(--card2); }
+  .tl-date { font-size: 11px; font-weight: 700; letter-spacing: 1px; margin-bottom: 4px; }
+  .tl-event { font-size: 14px; font-weight: 700; }
+  .tl-detail { font-size: 12px; color: var(--text2); margin-top: 6px; display: none; line-height: 1.5; }
+  .tl-item.expanded .tl-detail { display: block; }
+  .tl-tag { display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 100px;
+    margin-top: 6px; font-weight: 600; }
+  .cat-antlaşma { color: #3498db; } .cat-savaş { color: #e74c3c; } .cat-inkılap { color: #27ae60; }
+  .cat-kuruluş { color: #f39c12; } .cat-politika { color: #9b59b6; } .cat-olay { color: #1abc9c; }
+
+  /* ── PROGRESS PAGE ── */
+  .progress-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+  .prog-unit-card { background: var(--card); border-radius: var(--radius); padding: 20px; }
+  .puc-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+  .puc-title { font-size: 14px; font-weight: 700; }
+  .puc-badge { font-size: 20px; }
+  .puc-bars { display: flex; flex-direction: column; gap: 8px; }
+  .puc-bar-row { display: flex; align-items: center; gap: 10px; }
+  .puc-bar-lbl { font-size: 11px; color: var(--text2); width: 80px; }
+  .puc-bar-bg { flex: 1; background: rgba(255,255,255,.08); border-radius: 100px; height: 8px; }
+  .puc-bar-fill { height: 8px; border-radius: 100px; transition: width .6s; }
+  .puc-bar-pct { font-size: 11px; color: var(--text2); width: 30px; text-align: right; }
+  .mastery-row { display: grid; grid-template-columns: repeat(5,1fr); gap: 8px; margin-top: 12px; }
+  .mastery-cell { background: rgba(255,255,255,.05); border-radius: 6px; height: 28px; display: flex;
+    align-items: center; justify-content: center; font-size: 10px; color: var(--text2); transition: all .3s; }
+  .mastery-cell.known { background: rgba(46,204,113,.25); color: var(--green2); }
+  .mastery-cell.unknown { background: rgba(231,76,60,.15); color: var(--red2); }
+  .reset-btn { background: rgba(231,76,60,.15); border: 1px solid var(--red2); color: var(--red2);
+    padding: 8px 16px; border-radius: 8px; font-size: 12px; cursor: pointer; transition: all .2s; }
+  .reset-btn:hover { background: rgba(231,76,60,.3); }
+  .section-title { font-size: 1.1rem; font-weight: 700; color: var(--gold2); margin: 28px 0 16px;
+    padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,.08); }
+  .streak-info { background: linear-gradient(135deg,rgba(243,156,18,.15),rgba(231,76,60,.1));
+    border-radius: var(--radius); padding: 20px; display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+  .streak-num { font-size: 3rem; font-weight: 800; color: var(--gold2); }
+  .streak-text { font-size: 14px; color: var(--text2); }
+  .toast { position: fixed; bottom: 24px; right: 24px; background: var(--card2); border-radius: 12px;
+    padding: 12px 20px; font-size: 13px; box-shadow: var(--shadow); transform: translateY(80px);
+    transition: transform .3s; z-index: 999; border-left: 4px solid var(--green2); }
+  .toast.show { transform: translateY(0); }
+
+  /* ── VERIFY MODAL ── */
+  .verify-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.75); z-index: 200;
+    display: flex; align-items: center; justify-content: center; padding: 20px;
+    backdrop-filter: blur(4px); opacity: 0; pointer-events: none; transition: opacity .25s; }
+  .verify-overlay.open { opacity: 1; pointer-events: all; }
+  .verify-box { background: var(--card); border-radius: 20px; padding: 28px 24px; max-width: 520px;
+    width: 100%; box-shadow: 0 24px 60px rgba(0,0,0,.7); border: 1px solid rgba(255,255,255,.1);
+    transform: translateY(20px); transition: transform .25s; }
+  .verify-overlay.open .verify-box { transform: translateY(0); }
+  .verify-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(243,156,18,.15);
+    color: var(--gold2); font-size: 12px; font-weight: 700; padding: 5px 12px;
+    border-radius: 100px; margin-bottom: 14px; letter-spacing: .5px; }
+  .verify-q { font-size: 1rem; font-weight: 700; line-height: 1.5; margin-bottom: 20px;
+    color: var(--text); }
+  .verify-opts { display: flex; flex-direction: column; gap: 10px; }
+  .verify-opt { background: rgba(255,255,255,.05); border: 2px solid rgba(255,255,255,.1);
+    border-radius: 12px; padding: 13px 16px; cursor: pointer; font-size: 13.5px;
+    color: var(--text); text-align: left; transition: all .18s; line-height: 1.4; }
+  .verify-opt:hover:not(:disabled) { border-color: var(--gold2); background: rgba(243,156,18,.1); }
+  .verify-opt.v-correct { border-color: var(--green2) !important; background: rgba(46,204,113,.15) !important;
+    color: var(--green2) !important; }
+  .verify-opt.v-wrong { border-color: var(--red2) !important; background: rgba(231,76,60,.12) !important;
+    color: var(--red2) !important; }
+  .verify-feedback { margin-top: 16px; padding: 12px 16px; border-radius: 10px;
+    font-size: 13px; line-height: 1.5; display: none; }
+  .verify-feedback.ok { background: rgba(46,204,113,.12); color: var(--green2); border-left: 3px solid var(--green2); }
+  .verify-feedback.fail { background: rgba(231,76,60,.12); color: #ff6b6b; border-left: 3px solid var(--red2); }
+  .verify-continue { margin-top: 16px; width: 100%; padding: 13px; border-radius: 12px;
+    border: none; font-size: 14px; font-weight: 700; cursor: pointer; display: none;
+    transition: all .2s; color: #fff; }
+  .verify-continue:hover { filter: brightness(1.15); }
+
+  /* ── MOBILE RESPONSIVE ── */
+  @media (max-width: 640px) {
+    /* Bottom tab bar on mobile */
+    nav {
+      position: fixed; bottom: 0; top: auto; left: 0; right: 0;
+      height: 64px; padding: 0 4px;
+      justify-content: space-around;
+      border-top: 1px solid rgba(255,255,255,.12);
+      border-radius: 18px 18px 0 0;
+      background: linear-gradient(180deg,#12234a,#0f1f3d);
+    }
+    .nav-logo { display: none; }
+    .nav-btn {
+      flex-direction: column; gap: 2px; font-size: 10px;
+      padding: 6px 2px; flex: 1; justify-content: center; align-items: center;
+      border-radius: 10px; min-width: 0;
+    }
+    .nav-btn .nb-icon { font-size: 20px; }
+    .nav-btn span:last-child { display: block; }
+
+    /* Page padding — leave room for bottom nav */
+    .page { padding: 16px 14px 80px; }
+
+    /* Dashboard */
+    .dash-header { padding: 16px 0 8px; }
+    .dash-header h1 { font-size: 1.3rem; }
+    .dash-sub { font-size: 13px; }
+    .stats-row { grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0; }
+    .stat-num { font-size: 1.6rem; }
+    .units-grid { grid-template-columns: 1fr; gap: 12px; }
+
+    /* Flashcards */
+    .fc-header { gap: 8px; margin-bottom: 12px; }
+    .fc-header h2 { font-size: 1.1rem; }
+    .fc-filter { gap: 6px; }
+    .fc-filter button { padding: 5px 10px; font-size: 11px; }
+    .card-scene { height: 210px; margin-bottom: 14px; }
+    .card-face { padding: 20px 16px; }
+    .card-term { font-size: 1.4rem; }
+    .card-meaning { font-size: 1rem; }
+    .card-actions { gap: 8px; flex-wrap: nowrap; }
+    .card-actions button { padding: 11px 14px; font-size: 13px; flex: 1; text-align: center; }
+    .fc-nav button { width: 36px; height: 36px; font-size: 16px; }
+
+    /* Quiz */
+    .quiz-setup { margin: 16px auto; }
+    .quiz-setup h2 { font-size: 1.2rem; }
+    .quiz-options { grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+    .quiz-opt-card { padding: 12px 10px; }
+    .quiz-opt-card .qoc-icon { font-size: 20px; }
+    .quiz-opt-card .qoc-title { font-size: 13px; }
+    .quiz-opt-card .qoc-desc { display: none; }
+    .quiz-q { font-size: 1rem; padding: 14px; }
+    .quiz-choice { padding: 12px 14px; font-size: 13px; }
+    .result-breakdown { grid-template-columns: 1fr 1fr 1fr; }
+    .rb-num { font-size: 1.4rem; }
+
+    /* Timeline */
+    .tl-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .tl-search { width: 100%; }
+    .tl-filter { gap: 6px; }
+
+    /* Progress */
+    .progress-grid { grid-template-columns: 1fr; gap: 12px; }
+    .puc-bar-lbl { width: 65px; font-size: 10px; }
+    .mastery-row { grid-template-columns: repeat(6,1fr); gap: 5px; }
+    .mastery-cell { height: 24px; font-size: 9px; }
+    .streak-info { padding: 14px; gap: 12px; }
+    .streak-num { font-size: 2.2rem; }
+
+    /* Toast above bottom nav */
+    .toast { bottom: 76px; right: 16px; left: 16px; text-align: center; }
+
+    /* Verify modal */
+    .verify-box { padding: 20px 16px; border-radius: 16px; }
+    .verify-q { font-size: 0.95rem; }
+    .verify-opt { padding: 11px 14px; font-size: 13px; }
+
+    /* Section title */
+    .section-title { margin: 20px 0 12px; font-size: 1rem; }
+  }
+
+  /* Extra small phones */
+  @media (max-width: 380px) {
+    .card-term { font-size: 1.2rem; }
+    .quiz-options { grid-template-columns: 1fr; }
+    .stats-row { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .card-actions button { padding: 10px 8px; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">🇹🇷 <span>İnkılap</span> Tarihi</div>
+  <button class="nav-btn active" onclick="showPage('dashboard')" id="nb-dash"><span class="nb-icon">🏠</span><span>Ana Sayfa</span></button>
+  <button class="nav-btn" onclick="showPage('flashcards')" id="nb-fc"><span class="nb-icon">🃏</span><span>Kartlar</span></button>
+  <button class="nav-btn" onclick="showPage('quiz')" id="nb-quiz"><span class="nb-icon">📝</span><span>Sınav</span></button>
+  <button class="nav-btn" onclick="showPage('timeline')" id="nb-tl"><span class="nb-icon">📅</span><span>Zaman</span></button>
+  <button class="nav-btn" onclick="showPage('progress')" id="nb-prog"><span class="nb-icon">📊</span><span>Gelişim</span></button>
+</nav>
+
+<!-- ═══════════════ DASHBOARD ═══════════════ -->
+<div class="page active" id="page-dashboard">
+  <div class="dash-header">
+    <h1>8. Sınıf <span>T.C. İnkılap Tarihi</span></h1>
+    <p class="dash-sub">Kavramlar · Tarihî Olaylar · Osmanlıca Terimler · 7 Ünite</p>
+  </div>
+  <div class="stats-row" id="dash-stats"></div>
+  <div class="section-title">📚 Üniteler</div>
+  <div class="units-grid" id="units-grid"></div>
+</div>
+
+<!-- ═══════════════ FLASHCARDS ═══════════════ -->
+<div class="page" id="page-flashcards">
+  <div class="fc-header">
+    <h2>🃏 Kavram Kartları</h2>
+    <div class="fc-filter" id="fc-filter"></div>
+  </div>
+  <div class="fc-progress-info">
+    <span id="fc-known-count">Biliyor: 0</span>
+    <span id="fc-remaining">Kalan: 0</span>
+  </div>
+  <div class="fc-progress-bar"><div class="fc-pb-inner" id="fc-pb" style="width:0%"></div></div>
+  <div class="card-scene" id="card-scene" onclick="flipCard()">
+    <div class="card-inner" id="card-inner">
+      <div class="card-face card-front">
+        <div class="card-tag" id="card-tag">Kavram</div>
+        <div class="card-term" id="card-term">—</div>
+        <div class="card-hint" id="card-hint">Kartı çevirmek için tıklayın</div>
+      </div>
+      <div class="card-face card-back">
+        <div class="card-tag">Anlamı</div>
+        <div class="card-meaning" id="card-meaning">—</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-actions">
+    <button class="btn-unknown" onclick="markCard(false)">✗ Bilmiyorum</button>
+    <button class="btn-skip" onclick="nextCard()">→ Geç</button>
+    <button class="btn-know" onclick="markCard(true)">✓ Biliyorum</button>
+  </div>
+  <div class="fc-nav">
+    <button onclick="prevCard()">‹</button>
+    <span class="fc-counter" id="fc-counter">0 / 0</span>
+    <button onclick="nextCard()">›</button>
+  </div>
+</div>
+
+<!-- ═══════════════ QUIZ ═══════════════ -->
+<div class="page" id="page-quiz">
+  <div id="quiz-setup-area" class="quiz-setup">
+    <h2>📝 Bilgi Sınavı</h2>
+    <p>Konu ve soru sayısını seçin</p>
+    <div class="quiz-options" id="quiz-unit-opts"></div>
+    <div style="display:flex;gap:12px;justify-content:center;margin-bottom:24px;">
+      <label style="color:var(--text2);font-size:13px;">Soru sayısı:
+        <select id="q-count" style="background:var(--card);border:1px solid rgba(255,255,255,.1);color:var(--text);padding:6px 10px;border-radius:8px;margin-left:8px;">
+          <option>5</option><option selected>10</option>
+        </select>
+      </label>
+      <label style="color:var(--text2);font-size:13px;">Tür:
+        <select id="q-type" style="background:var(--card);border:1px solid rgba(255,255,255,.1);color:var(--text);padding:6px 10px;border-radius:8px;margin-left:8px;">
+          <option value="all">Karma</option>
+          <option value="term">Sadece Kavramlar</option>
+          <option value="event">Sadece Olaylar</option>
+        </select>
+      </label>
+    </div>
+    <button class="btn-primary" onclick="startQuiz()">Sınava Başla 🚀</button>
+  </div>
+  <div id="quiz-question-area" class="quiz-question-area" style="display:none"></div>
+  <div id="quiz-result-area" class="quiz-result" style="display:none"></div>
+</div>
+
+<!-- ═══════════════ TIMELINE ═══════════════ -->
+<div class="page" id="page-timeline">
+  <div class="tl-header">
+    <h2>📅 Tarih Şeridi</h2>
+    <input class="tl-search" id="tl-search" placeholder="🔍 Ara..." oninput="filterTimeline()">
+    <div class="tl-filter" id="tl-filter"></div>
+  </div>
+  <div class="timeline" id="timeline-list"></div>
+</div>
+
+<!-- ═══════════════ PROGRESS ═══════════════ -->
+<div class="page" id="page-progress">
+  <div class="section-title">📊 Öğrenme Gelişimim</div>
+  <div class="streak-info">
+    <div class="streak-num" id="streak-num">0</div>
+    <div><div style="font-size:16px;font-weight:700;color:var(--text)">🔥 Günlük Seri</div>
+    <div class="streak-text">Bugün çalışmaya devam et!</div></div>
+    <div style="margin-left:auto;text-align:right">
+      <div style="font-size:12px;color:var(--text2)">Toplam puan</div>
+      <div style="font-size:2rem;font-weight:800;color:var(--gold2)" id="total-pts">0</div>
+    </div>
+  </div>
+  <div class="progress-grid" id="progress-grid"></div>
+  <div style="text-align:center;margin-top:32px">
+    <button class="reset-btn" onclick="if(confirm('Tüm ilerleme silinsin mi?'))resetProgress()">🗑 İlerlemeyi Sıfırla</button>
+  </div>
+</div>
+
+<!-- ═══════════ VERIFY MODAL ═══════════ -->
+<div class="verify-overlay" id="verify-overlay">
+  <div class="verify-box">
+    <div class="verify-badge">🎯 Bildiğini Kanıtla!</div>
+    <div class="verify-q" id="verify-q"></div>
+    <div class="verify-opts" id="verify-opts"></div>
+    <div class="verify-feedback" id="verify-feedback"></div>
+    <button class="verify-continue" id="verify-continue" onclick="closeVerify()"></button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════
+//                DATA
+// ═══════════════════════════════════════════
+const UNITS = [
+  {
+    id:1, title:"Bir Kahraman Doğuyor", icon:"⭐",
+    color:"#e74c3c",
+    terms:[
+      {front:"İhtilal",back:"Köklü bir devrim; mevcut düzeni devirmek için yapılan silahlı ayaklanma (ör. Fransız İhtilali 1789)"},
+      {front:"Islahat",back:"Bir kurumu veya düzeni düzeltme ve iyileştirme; reform. Mevcut yapıyı koruyarak yapılır."},
+      {front:"Meşrutiyet",back:"Hükümdarın yetkilerinin anayasa ile sınırlandırıldığı, parlamentonun bulunduğu yönetim biçimi"},
+      {front:"İnkılap",back:"Köklü ve kalıcı değişim; eski düzeni tamamen kaldırarak yeni bir düzen kurma"},
+      {front:"Düyun-u Umumiye",back:"\"Genel Borçlar\" – Osmanlı'nın dış borçlarını yönetmek için 1881'de kurulan yabancı denetim kurumu"},
+      {front:"Osmanlıcılık",back:"Dil, ırk ve din farkı gözetmeksizin tüm Osmanlı vatandaşlarını eşit sayan fikir akımı (Namık Kemal, Ziya Paşa)"},
+      {front:"Türkçülük",back:"Tüm Türklerin ortak dil, tarih ve kültür etrafında birleşmesini amaçlayan fikir akımı (Ziya Gökalp, Yusuf Akçura)"},
+      {front:"İslamcılık",back:"İslam dünyasının Osmanlı halifesi etrafında birleşmesini savunan fikir akımı (II. Abdülhamid dönemi devlet politikası)"},
+      {front:"Batıcılık",back:"Osmanlı'nın Batı medeniyetinin bilim, teknik VE kültürünü alarak kalkınmasını savunan akım (Tevfik Fikret)"},
+      {front:"Kanun-u Esasi",back:"1876'da ilan edilen Osmanlı Devleti'nin ilk anayasası; Birinci Meşrutiyet'i başlattı"},
+      {front:"Hatt-ı Hümâyun",back:"Padişahın kendi el yazısıyla kaleme aldığı en üst düzey ferman/buyruk"},
+      {front:"Tanzimat Fermanı",back:"3 Kasım 1839'da ilan edilen; tüm Osmanlı vatandaşlarına eşit haklar tanıyan reform belgesi (Gülhane Hatt-ı Hümâyunu)"},
+      {front:"Islahat Fermanı",back:"1856'da ilan edilen; özellikle gayrimüslimlere geniş haklar tanıyan reform belgesi"},
+      {front:"Jön Türkler",back:"1865'te İstanbul'da kurulan; meşruti yönetim ve anayasa isteyen aydın ve subay grubu (Genç Osmanlılar)"},
+      {front:"İttihat ve Terakki Cemiyeti",back:"\"Birlik ve İlerleme\" anlamında; İkinci Meşrutiyet'i (1908) ilan ettiren siyasi örgüt"},
+      {front:"Hürriyet",back:"Özgürlük"},
+      {front:"Müdafaa",back:"Savunma"},
+      {front:"Panslavizm",back:"Tüm Slav uluslarını birleştirme politikası; Rusya tarafından güdüldü, Osmanlı'yı olumsuz etkiledi"},
+    ],
+    events:[
+      {date:"1789",ev:"Fransız İhtilali",det:"Milliyetçilik, özgürlük, eşitlik fikirlerini dünyaya yaydı; Osmanlı'daki azınlık isyanlarını tetikledi"},
+      {date:"1839",ev:"Tanzimat Fermanı",det:"Sultan Abdülmecid döneminde ilan edildi; demokratikleşme hareketlerine ivme kazandırdı"},
+      {date:"1856",ev:"Islahat Fermanı",det:"Gayrimüslimlere geniş haklar tanındı; Avrupalı devletlerin iç işlere karışması arttı"},
+      {date:"1876",ev:"Birinci Meşrutiyet – Kanun-u Esasi",det:"Osmanlı'nın ilk anayasası ilan edildi; II. Abdülhamid 1878'de meclisi kapattı"},
+      {date:"1877-78",ev:"93 Harbi (Osmanlı-Rus Savaşı)",det:"Büyük toprak kaybı; Sırplar, Romanyalılar, Karadağlılar bağımsızlık kazandı"},
+      {date:"1881",ev:"Mustafa Kemal'in Doğumu",det:"Selanik'te doğdu; babası Ali Rıza Efendi, annesi Zübeyde Hanım"},
+      {date:"1908",ev:"İkinci Meşrutiyet",det:"İttihat ve Terakki baskısıyla ilan edildi; çok partili dönem başladı"},
+      {date:"1909",ev:"31 Mart Olayı",det:"Meşruti yönetime karşı isyan; Selanik'ten gelen Hareket Ordusu bastırdı"},
+      {date:"1911-12",ev:"Trablusgarp Savaşı",det:"İtalya Libya'yı aldı; Uşi Antlaşması ile sonuçlandı"},
+      {date:"1912-13",ev:"Balkan Savaşları",det:"Osmanlı Balkanlar'daki topraklarının neredeyse tamamını kaybetti"},
+    ]
+  },
+  {
+    id:2, title:"Millî Uyanış: Bağımsızlık Yolunda", icon:"🗡️",
+    color:"#e67e22",
+    terms:[
+      {front:"Kuvâ-yı Millîye",back:"\"Millî Kuvvetler\" – Düzenli ordu kurulmadan önce halkın oluşturduğu silahlı direniş birlikleri"},
+      {front:"Misakımillî",back:"\"Millî Ant\" – Ocak 1920'de son Osmanlı Meclisi'nde kabul edilen ulusal sınır ve egemenlik belgesi"},
+      {front:"Heyet-i Temsiliye",back:"Sivas Kongresi'nde seçilen; Millî Mücadele'yi temsil eden ve yöneten kurul (Temsil Heyeti)"},
+      {front:"Mütareke",back:"Ateşkes; savaşı geçici olarak durduran anlaşma"},
+      {front:"Müdafaa-i Hukuk Cemiyetleri",back:"\"Hakları Savunma Cemiyetleri\" – İşgale karşı kurulan yerel direniş örgütleri"},
+      {front:"İstiklal",back:"Bağımsızlık; başka devletlere bağlı olmama durumu"},
+      {front:"Teşkilat-ı Esasiye",back:"1921 tarihli ilk TBMM Anayasası; \"Egemenlik kayıtsız şartsız milletindir\" ilkesini getirdi"},
+      {front:"Seferberlik",back:"Tüm halk ve kaynakların savaş için harekete geçirilmesi"},
+      {front:"İtilaf Devletleri",back:"Birinci Dünya Savaşı'nda Osmanlı'ya karşı savaşan blok: İngiltere, Fransa, Rusya (ve Yunanistan)"},
+      {front:"İttifak Devletleri",back:"Osmanlı'nın müttefik bloku: Almanya, Avusturya-Macaristan"},
+      {front:"Cephe",back:"Savaşta iki tarafın karşı karşıya geldiği hat veya savaş bölgesi"},
+      {front:"Taarruz",back:"Saldırı, hücum etme"},
+      {front:"Genelge",back:"Üst makamdan alt birimlere yönelik yazılı duyuru/yönerge"},
+      {front:"Kongre",back:"Önemli kararların alındığı büyük ve geniş katılımlı toplantı"},
+    ],
+    events:[
+      {date:"30 Eki 1918",ev:"Mondros Ateşkes Antlaşması",det:"Birinci Dünya Savaşı'nı Osmanlı açısından bitirdi; stratejik noktalar İtilaf devletlerine bırakıldı"},
+      {date:"1919",ev:"Paris Barış Konferansı",det:"Birinci Dünya Savaşı'nın barış şartları belirlendi; Wilson İlkeleri temelinde şekillendi"},
+      {date:"15 May 1919",ev:"İzmir'in İşgali",det:"Yunan kuvvetleri İzmir'e çıktı; Millî Mücadele'yi fiilen başlatan gelişme"},
+      {date:"19 May 1919",ev:"Samsun'a Çıkış",det:"Mustafa Kemal Paşa Samsun'a çıktı; Millî Mücadele'nin başlangıç tarihi kabul edilir"},
+      {date:"22 Haz 1919",ev:"Amasya Genelgesi",det:"\"Vatanın bütünlüğü tehlikededir\" – Ulusal kongre toplantısı için çağrı"},
+      {date:"23 Tem 1919",ev:"Erzurum Kongresi",det:"Doğu Anadolu'nun savunulması kararlaştırıldı; Heyet-i Temsiliye seçildi"},
+      {date:"4 Eyl 1919",ev:"Sivas Kongresi",det:"Tüm ülkeden delegeler katıldı; Millî Mücadele tek çatı altında birleştirildi"},
+      {date:"27 Ara 1919",ev:"Temsil Heyeti Ankara'ya Geldi",det:"Millî Mücadele'nin merkezi Ankara oldu"},
+      {date:"28 Oca 1920",ev:"Misakımillî'nin Kabulü",det:"Son Osmanlı Meclisi ulusal sınırları ve bağımsızlık ilkelerini ilan etti"},
+      {date:"16 Mar 1920",ev:"İstanbul'un İşgali",det:"İtilaf devletleri İstanbul ve Meclisi'ni işgal etti; TBMM'nin açılmasını zorunlu kıldı"},
+      {date:"23 Nis 1920",ev:"TBMM'nin Açılması",det:"Ankara'da ulusal iradeye dayalı meclis açıldı; 23 Nisan Ulusal Egemenlik ve Çocuk Bayramı"},
+      {date:"10 Ağu 1920",ev:"Sevr Antlaşması",det:"Osmanlı'yı fiilen parçalayan antlaşma; Türk tarafınca hiçbir zaman tanınmadı"},
+    ]
+  },
+  {
+    id:3, title:"Millî Bir Destan: Ya İstiklal Ya Ölüm!", icon:"⚔️",
+    color:"#f1c40f",
+    terms:[
+      {front:"Tekâlif-i Millîye",back:"\"Millî Yükümlülükler\" – 7-8 Ağustos 1921'de çıkarılan; ordunun ihtiyacı için halktan zorunlu katkı emirleri"},
+      {front:"Muharebe",back:"Savaş, çarpışma (ör. Sakarya Meydan Muharebesi)"},
+      {front:"Milis",back:"Düzenli ordu dışındaki silahlı halk gönüllüleri"},
+      {front:"Maarif",back:"Eğitim, öğretim, bilim (ör. Maarif Kongresi)"},
+      {front:"Nazır",back:"Bakan; devletin bir dalından sorumlu üst düzey yönetici"},
+      {front:"Başkomutanlık",back:"Ordunun en üst komuta makamı; Mustafa Kemal Paşa 5 Ağustos 1921'de bu göreve seçildi"},
+      {front:"Şüheda",back:"Şehitler; vatan için hayatını kaybeden askerler"},
+      {front:"Müttefik",back:"İttifak halindeki; birlikte savaşan devlet veya güç"},
+    ],
+    events:[
+      {date:"Şub-Nis 1920",ev:"Güney Cephesi: Maraş, Antep, Urfa",det:"Sütçü İmam (Maraş), Şahin Bey (Antep), Ali Saip Bey (Urfa) önderliğinde Fransızlara karşı direniş"},
+      {date:"2-3 Ara 1920",ev:"Gümrü Antlaşması",det:"TBMM'nin uluslararası alanda imzaladığı ilk antlaşma; Ermenistan Sevr'deki haklarından vazgeçti"},
+      {date:"6-10 Oca 1921",ev:"I. İnönü Muharebesi",det:"İlk büyük düzenli ordu zaferi; İsmet Paşa komutasında Yunan taarruzu püskürtüldü"},
+      {date:"20 Oca 1921",ev:"Teşkilat-ı Esasiye (1921 Anayasası)",det:"\"Egemenlik kayıtsız şartsız milletindir\" ilkesi anayasaya girdi"},
+      {date:"23 Mar 1921",ev:"II. İnönü Muharebesi",det:"İkinci Yunan taarruzu durduruldu; İtalya ve Fransa Anadolu'dan çekilmeye başladı"},
+      {date:"5 Ağu 1921",ev:"Mustafa Kemal Başkomutan Seçildi",det:"TBMM Mustafa Kemal Paşa'ya başkomutanlık yetkisi verdi"},
+      {date:"7-8 Ağu 1921",ev:"Tekâlif-i Millîye Emirleri",det:"Halkın elindeki silah ve malzemelerin bir kısmı orduya aktarıldı; tam bir millî dayanışma örneği"},
+      {date:"23 Ağu-13 Eyl 1921",ev:"Sakarya Meydan Savaşı",det:"22 gün 22 gece sürdü; Yunan ordusu büyük yenilgiye uğratıldı. Mustafa Kemal'e 'Gazi' ve 'Mareşal' unvanı verildi"},
+      {date:"13 Eki 1921",ev:"Kars Antlaşması",det:"Türkiye ile Gürcistan, Ermenistan, Azerbaycan arasında; doğu sınırları kesinleşti"},
+      {date:"20 Eki 1921",ev:"Ankara Antlaşması (Fransa ile)",det:"Fransa Güney Cephesi'nden çekildi; Antep'teki direniş tanındı"},
+      {date:"26 Ağu 1922",ev:"Büyük Taarruz",det:"Türk ordusu Yunan hatlarını yararak büyük imha harekâtını başlattı"},
+      {date:"9 Eyl 1922",ev:"İzmir'in Kurtuluşu",det:"Türk kuvvetleri İzmir'e girdi; Batı Anadolu'nun işgalden tamamen kurtarılması tamamlandı"},
+      {date:"11 Eki 1922",ev:"Mudanya Ateşkes Antlaşması",det:"İtilaf devletleri ile ateşkes; Doğu Trakya Türklere bırakıldı"},
+      {date:"1 Kas 1922",ev:"Saltanatın Kaldırılması",det:"Osmanlı hanedanlığı sona erdi; TBMM Lozan'a tek yetkili taraf olarak katıldı"},
+      {date:"24 Tem 1923",ev:"Lozan Barış Antlaşması",det:"Türkiye'nin bağımsızlığı uluslararası alanda tanındı; kapitülasyonlar kaldırıldı"},
+    ]
+  },
+  {
+    id:4, title:"Atatürkçülük ve Çağdaşlaşan Türkiye", icon:"🏛️",
+    color:"#27ae60",
+    terms:[
+      {front:"Mecelle",back:"Osmanlı'nın İslam hukukuna dayalı medeni kanunu; 1926'da Türk Medeni Kanunu ile kaldırıldı"},
+      {front:"Tevhid-i Tedrisat",back:"\"Öğretimin Birleştirilmesi\" – 3 Mart 1924'te tüm okulları Millî Eğitim Bakanlığı'na bağlayan kanun"},
+      {front:"Aşar",back:"Tarımsal ürünün onda biri oranında alınan vergi; 1925'te kaldırıldı"},
+      {front:"Kabotaj",back:"Bir ülkenin kendi kıyıları arasında yalnız kendi gemilerinin taşımacılık yapma hakkı (Kabotaj Kanunu 1926)"},
+      {front:"Halifelik",back:"İslam dünyasının dinî ve siyasi önderliği makamı; 3 Mart 1924'te kaldırıldı"},
+      {front:"Şeriye Mahkemeleri",back:"İslam hukukuna göre yargılama yapan dinî mahkemeler; 1924'te kaldırıldı"},
+      {front:"Erkân-ı Harbiye Vekâleti",back:"Genelkurmay Bakanlığı; 3 Mart 1924'te kaldırılarak ordu sivil denetime alındı"},
+      {front:"Harf İnkılabı",back:"1 Kasım 1928'de Arap alfabesinden Latin alfabesine geçiş"},
+      {front:"Millet Mektepleri",back:"Harf İnkılabı sonrasında yetişkinlere okuma-yazma öğretmek için açılan kurslar"},
+      {front:"Tekke ve Zaviye",back:"Tarikat mensuplarının ibadet ve toplanma yerleri; 1925'te Şeyh Said İsyanı'nın ardından kapatıldı"},
+      {front:"Nutuk",back:"\"Söylev\" – Atatürk'ün 1919-1927 yıllarını anlattığı, 1927'de okuduğu tarihi konuşma"},
+      {front:"Teşvik-i Sanayi Kanunu",back:"Sanayinin gelişmesini devlet desteğiyle hızlandırmayı amaçlayan yasa"},
+      {front:"Okka / Arşın / Endaze",back:"Okka = 1282 gr ağırlık; Arşın ≈ 68 cm uzunluk; Endaze ≈ 65 cm kumaş ölçüsü – hepsi 1931'de kaldırıldı"},
+      {front:"Laiklik",back:"Din ve devlet işlerinin birbirinden ayrılması; devletin tüm inançlara eşit mesafede durması"},
+      {front:"Cumhuriyetçilik",back:"Egemenliğin millete ait olduğu; seçimle gelen temsilcilerin yönettiği rejim anlayışı"},
+      {front:"Devletçilik",back:"Devletin ekonomiyi planlayıp yönlendirmesi; özel girişimi de desteklemesi"},
+    ],
+    events:[
+      {date:"13 Eki 1923",ev:"Ankara Başkent İlan Edildi",det:"1921 Anayasası'na eklenen maddeyle Ankara yeni Türk devletinin başkenti oldu"},
+      {date:"29 Eki 1923",ev:"Cumhuriyetin İlanı",det:"Türkiye Cumhuriyeti resmen kuruldu; Mustafa Kemal ilk cumhurbaşkanı seçildi"},
+      {date:"3 Mar 1924",ev:"Halifeliğin Kaldırılması + Tevhid-i Tedrisat",det:"Halifelik, Şeriye Vekâleti ve Erkân-ı Harbiye Vekâleti aynı gün kaldırıldı"},
+      {date:"1924",ev:"1924 Anayasası'nın Kabulü",det:"Güçler ayrılığı ve kabine sistemi benimsendi; devletin yönetim şekli açıkça belirtildi"},
+      {date:"1925",ev:"Şapka Kanunu ve Tekke/Zaviyelerin Kapatılması",det:"Kıyafetle toplumsal eşitsizlik giderildi; tarikatların kamuya açık faaliyeti yasaklandı"},
+      {date:"17 Şub 1926",ev:"Türk Medenî Kanunu",det:"İsviçre Medenî Kanunu uyarlandı; Mecelle kaldırıldı; kadın-erkek eşitliği sağlandı"},
+      {date:"1 Kas 1928",ev:"Harf İnkılabı",det:"Latin alfabesine geçildi; okuryazarlık oranı hızla arttı"},
+      {date:"1931",ev:"Türk Tarih Kurumu Kuruldu"},
+      {date:"1932",ev:"Türk Dil Kurumu Kuruldu"},
+      {date:"1930",ev:"Kadınlara Belediye Seçimlerinde Oy Hakkı"},
+      {date:"1934",ev:"Kadınlara Milletvekili Seçme/Seçilme Hakkı + Soyadı Kanunu",det:"Türkiye, bu hakları pek çok Avrupa ülkesinden önce verdi"},
+      {date:"17 Şub 1923",ev:"İzmir İktisat Kongresi",det:"Millî ekonomi ilkeleri belirlendi; devletçilik anlayışının temeli atıldı"},
+    ]
+  },
+  {
+    id:5, title:"Demokratikleşme Çabaları", icon:"🗳️",
+    color:"#2980b9",
+    terms:[
+      {front:"Fırka",back:"Siyasi parti (ör. Cumhuriyet Halk Fırkası → CHF)"},
+      {front:"Takrir-i Sükûn Kanunu",back:"\"Sükunun Sağlanması Kanunu\" – 1925'te çıkarılan; muhalif faaliyetleri kısıtlayan olağanüstü yetki yasası"},
+      {front:"Muhalefet",back:"İktidara karşı olan; denetim görevi yapan siyasi güç veya parti"},
+      {front:"Suikast",back:"Öldürme amacıyla yapılan planlı saldırı (ör. İzmir Suikast Girişimi 1926)"},
+      {front:"Jeopolitik",back:"Coğrafi konum ile siyasi güç arasındaki ilişkiyi inceleyen yaklaşım"},
+    ],
+    events:[
+      {date:"17 Kas 1924",ev:"Terakkiperver Cumhuriyet Fırkası",det:"Cumhuriyet'in ilk muhalefet partisi; Kazım Karabekir ve arkadaşları kurdu"},
+      {date:"1925",ev:"Şeyh Said İsyanı",det:"Güneydoğu'da çıkan isyan; Takrir-i Sükûn Kanunu ile bastırıldı, Terakkiperver Fırka kapatıldı"},
+      {date:"1926",ev:"İzmir Suikast Girişimi",det:"Atatürk'e suikast planlandı; Giritli Şevki öncülüğünde; Atatürk programını değiştirerek kurtuldu"},
+      {date:"12 Ağu 1930",ev:"Serbest Cumhuriyet Fırkası",det:"Fethi Okyar tarafından kuruldu; cumhuriyet karşıtı gösteriler üzerine 17 Kasım 1930'da kapatıldı"},
+    ]
+  },
+  {
+    id:6, title:"Atatürk Dönemi Türk Dış Politikası", icon:"🌍",
+    color:"#8e44ad",
+    terms:[
+      {front:"Mütekabiliyet",back:"Karşılıklılık ilkesi; bir devletin diğerine tanıdığı hakkı o devlet de tanır"},
+      {front:"Manda",back:"Uluslararası bir otoritenin zayıf ülkeleri yönetmek için güçlü devlete verdiği yetki/görev"},
+      {front:"Nüfus Mübadelesi",back:"İki ülke arasında azınlık nüfusların karşılıklı yer değiştirmesi (Türkiye-Yunanistan 1923/1930)"},
+      {front:"Antant",back:"İttifak veya anlaşma; özellikle savunma amaçlı (ör. Balkan Antantı 1934)"},
+      {front:"Kapitülasyon",back:"Osmanlı'nın yabancı devlet vatandaşlarına tanıdığı ayrıcalıklar; Lozan'da kaldırıldı"},
+      {front:"Milletler Cemiyeti",back:"Birinci Dünya Savaşı sonrası kurulan uluslararası barış örgütü; BM'nin öncülü. Türkiye 1932'de üye oldu"},
+      {front:"Pakt",back:"Güvenlik veya işbirliği amacıyla imzalanan çok taraflı anlaşma (ör. Sadabat Paktı 1937)"},
+    ],
+    events:[
+      {date:"1926",ev:"Musul Ankara Antlaşması",det:"Musul, İngiliz mandası Irak'a bırakıldı; 25 yıl boyunca petrol gelirinden pay alındı"},
+      {date:"1923-30",ev:"Nüfus Mübadelesi (Yunanistan ile)",det:"İstanbul Rumları ve Batı Trakya Türkleri hariç karşılıklı yer değişimi; Lozan'da kararlaştırıldı"},
+      {date:"18 Tem 1932",ev:"Milletler Cemiyeti'ne Giriş",det:"Türkiye, dünya barışına katkıda bulunmak ve uluslararası alanda etkinliğini artırmak için üye oldu"},
+      {date:"9 Şub 1934",ev:"Balkan Antantı",det:"Türkiye, Yunanistan, Yugoslavya, Romanya; Balkan sınırlarını karşılıklı güvence altına aldı"},
+      {date:"20 Tem 1936",ev:"Montrö Boğazlar Sözleşmesi",det:"Boğazlar Komisyonu kaldırıldı; Türkiye'nin Boğazlar üzerinde tam egemenliği tanındı"},
+      {date:"8 Tem 1937",ev:"Sadabat Paktı",det:"Türkiye, İran, Irak, Afganistan; Orta Doğu'da barış ve güvenlik amacıyla kuruldu"},
+      {date:"30 Haz 1939",ev:"Hatay'ın Türkiye'ye Katılması",det:"Hatay Meclisi birleşme kararı aldı; Misakımillî doğrultusunda barışçıl yollarla gerçekleşti"},
+    ]
+  },
+  {
+    id:7, title:"Atatürk'ün Ölümü ve Sonrası", icon:"🕊️",
+    color:"#1abc9c",
+    terms:[
+      {front:"Mihver Devletleri",back:"İkinci Dünya Savaşı'nda Almanya, İtalya ve Japonya'nın oluşturduğu blok"},
+      {front:"Müttefik Devletler",back:"İkinci Dünya Savaşı'nda İngiltere, Fransa, SSCB ve ABD'nin oluşturduğu blok"},
+      {front:"Millî Korunma Kanunu",back:"Savaş yıllarında ekonomiyi devlet denetimine alan olağanüstü yetki yasası"},
+      {front:"Varlık Vergisi",back:"İkinci Dünya Savaşı döneminde servet sahiplerinden alınan özel vergi; uygulamada tartışmalı sonuçlar verdi"},
+      {front:"Mozole",back:"Anıt mezar yapısı; özellikle Anıtkabir için kullanılır (Atatürk'ün mezarı)"},
+      {front:"Ordugâh",back:"Ordu karargâhı; askerin konuşlandığı kamp alanı"},
+    ],
+    events:[
+      {date:"10 Kas 1938",ev:"Atatürk'ün Vefatı",det:"Dolmabahçe Sarayı, İstanbul, saat 09:05. Yerine İsmet İnönü cumhurbaşkanı seçildi"},
+      {date:"1939",ev:"Atatürk'ün Vasiyeti – Kurumlar",det:"Türk Dil Kurumu ve Türk Tarih Kurumu'na servetini bıraktı"},
+      {date:"1939-45",ev:"İkinci Dünya Savaşı",det:"Türkiye tarafsız kaldı; 1945'te Almanya'ya savaş ilan etti"},
+      {date:"1940-45",ev:"Savaşın Türkiye'ye Etkileri",det:"Millî Korunma Kanunu, karne uygulaması, Varlık Vergisi, ekonomik sıkıntılar"},
+      {date:"1946",ev:"Demokrat Parti'nin Kurulması",det:"Celal Bayar ve Adnan Menderes tarafından kuruldu; çok partili demokrasiye geçişin mihenk taşı"},
+      {date:"1950",ev:"Çok Partili Demokraside İlk İktidar Değişikliği",det:"Demokrat Parti büyük çoğunlukla seçimi kazandı; tek parti dönemi sona erdi"},
+    ]
+  }
+];
+
+// Quiz questions pool
+const QUIZ_POOL = [
+  {q:"Mondros Ateşkes Antlaşması hangi tarihte imzalanmıştır?",opts:["19 Mayıs 1919","30 Ekim 1918","23 Nisan 1920","28 Ocak 1920"],c:1,ex:"Mondros, 30 Ekim 1918'de imzalandı ve Birinci Dünya Savaşı'nı Osmanlı açısından bitirdi.",u:2},
+  {q:"\"Egemenlik kayıtsız şartsız milletindir\" ilkesi hangi belgeyle anayasaya girdi?",opts:["Sevr Antlaşması","Misakımillî","1921 Anayasası (Teşkilat-ı Esasiye)","Kanun-u Esasi"],c:2,ex:"Teşkilat-ı Esasiye (1921 Anayasası) bu ilkeyi düzenledi.",u:3},
+  {q:"TBMM kaç tarihinde açılmıştır?",opts:["19 Mayıs 1919","28 Ocak 1920","23 Nisan 1920","29 Ekim 1923"],c:2,ex:"TBMM 23 Nisan 1920'de Ankara'da açıldı; bu tarih Ulusal Egemenlik ve Çocuk Bayramı olarak kutlanmaktadır.",u:2},
+  {q:"Cumhuriyet hangi tarihte ilan edilmiştir?",opts:["1 Kasım 1922","13 Ekim 1923","29 Ekim 1923","3 Mart 1924"],c:2,ex:"Türkiye Cumhuriyeti 29 Ekim 1923'te ilan edildi.",u:4},
+  {q:"Halifelik hangi tarihte kaldırılmıştır?",opts:["1 Kasım 1922","13 Ekim 1923","29 Ekim 1923","3 Mart 1924"],c:3,ex:"Halifelik 3 Mart 1924'te kaldırıldı; aynı gün Tevhid-i Tedrisat Kanunu da çıkarıldı.",u:4},
+  {q:"Harf İnkılabı hangi tarihte gerçekleşmiştir?",opts:["3 Mart 1924","17 Şubat 1926","1 Kasım 1928","1934"],c:2,ex:"1 Kasım 1928'de Arap harflerinden Latin harflerine geçildi.",u:4},
+  {q:"Sakarya Meydan Savaşı hangi zaman aralığında gerçekleşmiştir?",opts:["6-10 Ocak 1921","23 Mart - 1 Nisan 1921","23 Ağustos - 13 Eylül 1921","26 Ağustos - 9 Eylül 1922"],c:2,ex:"Sakarya 23 Ağustos - 13 Eylül 1921; 22 gün 22 gece sürdü.",u:3},
+  {q:"TBMM'nin uluslararası alanda imzaladığı ilk antlaşma hangisidir?",opts:["Kars Antlaşması","Gümrü Antlaşması","Moskova Antlaşması","Lozan Barış Antlaşması"],c:1,ex:"Gümrü Antlaşması (2-3 Aralık 1920) TBMM'nin imzaladığı ilk uluslararası antlaşmadır.",u:3},
+  {q:"Lozan Barış Antlaşması hangi tarihte imzalanmıştır?",opts:["11 Ekim 1922","29 Ekim 1923","24 Temmuz 1923","30 Haziran 1939"],c:2,ex:"Lozan 24 Temmuz 1923'te imzalandı; Türkiye'nin bağımsızlığı tanındı.",u:3},
+  {q:"Düyun-u Umumiye ne anlama gelmektedir?",opts:["Millî Kuvvetler","Genel Borçlar İdaresi","Devlet Hazinesi","Yabancı Okullar"],c:1,ex:"Düyun-u Umumiye Osmanlı'nın dış borçlarını yönetmek için 1881'de kuruldu.",u:1},
+  {q:"Tekâlif-i Millîye Emirleri kimin tarafından çıkarılmıştır?",opts:["İsmet Paşa","Ali Fuat Paşa","Mustafa Kemal Paşa","Kâzım Karabekir Paşa"],c:2,ex:"Mustafa Kemal Paşa 7-8 Ağustos 1921'de bu emirleri çıkardı.",u:3},
+  {q:"Misakımillî hangi mecliste kabul edilmiştir?",opts:["TBMM","Son Osmanlı Mebusan Meclisi","Sivas Kongresi","Erzurum Kongresi"],c:1,ex:"Misakımillî 28 Ocak 1920'de son Osmanlı Mebusan Meclisi'nde kabul edildi.",u:2},
+  {q:"Montrö Boğazlar Sözleşmesi hangi tarihte imzalanmıştır?",opts:["9 Şubat 1934","8 Temmuz 1937","20 Temmuz 1936","30 Haziran 1939"],c:2,ex:"Montrö 20 Temmuz 1936'da imzalandı; Boğazlar üzerinde tam Türk egemenliği sağlandı.",u:6},
+  {q:"Balkan Antantı'na hangi ülkeler katılmıştır?",opts:["Türkiye, İran, Irak, Afganistan","Türkiye, Yunanistan, Yugoslavya, Romanya","Türkiye, İngiltere, Fransa, Rusya","Türkiye, Almanya, Bulgaristan, Avusturya"],c:1,ex:"Balkan Antantı 9 Şubat 1934'te Türkiye, Yunanistan, Yugoslavya ve Romanya arasında kuruldu.",u:6},
+  {q:"Sadabat Paktı'na hangi ülkeler katılmıştır?",opts:["Türkiye, Yunanistan, Yugoslavya, Romanya","Türkiye, İran, Irak, Afganistan","Türkiye, İngiltere, Fransa, Rusya","Türkiye, Suriye, Mısır, Ürdün"],c:1,ex:"Sadabat Paktı 8 Temmuz 1937'de Türkiye, İran, Irak ve Afganistan arasında imzalandı.",u:6},
+  {q:"Amasya Genelgesi hangi tarihte yayınlanmıştır?",opts:["19 Mayıs 1919","22 Haziran 1919","23 Temmuz 1919","4 Eylül 1919"],c:1,ex:"Amasya Genelgesi 22 Haziran 1919'da yayınlandı; ulusal kongreye çağrıydı.",u:2},
+  {q:"Hatay Türkiye'ye ne zaman katılmıştır?",opts:["20 Temmuz 1936","8 Temmuz 1937","10 Kasım 1938","30 Haziran 1939"],c:3,ex:"Hatay Meclisi 30 Haziran 1939'da Türkiye ile birleşme kararı aldı.",u:6},
+  {q:"Atatürk'ün 6 temel ilkesinden biri değildir:",opts:["Cumhuriyetçilik","Milliyetçilik","Federalizm","Laiklik"],c:2,ex:"6 ilke: Cumhuriyetçilik, Milliyetçilik, Halkçılık, Devletçilik, Laiklik, İnkılapçılık. Federalizm bunlar arasında yer almaz.",u:4},
+  {q:"Türk Medeni Kanunu hangi tarihte kabul edilmiştir?",opts:["1924","17 Şubat 1926","1 Kasım 1928","1934"],c:1,ex:"Türk Medeni Kanunu 17 Şubat 1926'da kabul edildi; İsviçre Medeni Kanunu'ndan uyarlandı.",u:4},
+  {q:"I. İnönü Muharebesi'nin önemi nedir?",opts:["Büyük Taarruz'un başlangıcı","Düzenli ordunun ilk büyük zaferi","TBMM'nin açılması","Lozan'a hazırlık"],c:1,ex:"I. İnönü (6-10 Ocak 1921) düzenli ordunun Yunan kuvvetlerine karşı kazandığı ilk büyük zaferdir.",u:3},
+  {q:"Büyük Taarruz hangi tarihte başlamıştır?",opts:["9 Eylül 1922","23 Ağustos 1921","26 Ağustos 1922","11 Ekim 1922"],c:2,ex:"Büyük Taarruz 26 Ağustos 1922'de başladı; 9 Eylül'de İzmir'in kurtuluşuyla sonuçlandı.",u:3},
+  {q:"Saltanat hangi tarihte kaldırılmıştır?",opts:["29 Ekim 1923","13 Ekim 1923","1 Kasım 1922","3 Mart 1924"],c:2,ex:"Saltanat 1 Kasım 1922'de TBMM kararıyla kaldırıldı.",u:4},
+  {q:"\"Yurtta sulh, cihanda sulh\" ilkesi kimin dış politika anlayışını özetler?",opts:["İsmet İnönü","Kâzım Karabekir","Atatürk","Fethi Okyar"],c:2,ex:"Bu söz Atatürk'e aittir ve Türkiye'nin barışçıl dış politika anlayışını özetler.",u:6},
+  {q:"Terakkiperver Cumhuriyet Fırkası hangi gerekçeyle kapatıldı?",opts:["Seçim kaybettiği için","Şeyh Said İsyanı'yla bağlantı şüphesiyle","Atatürk'e suikast girişimiyle","Ekonomik başarısızlık nedeniyle"],c:1,ex:"Doğuda çıkan Şeyh Said İsyanı'yla ilişkilendirilerek Takrir-i Sükûn Kanunu çerçevesinde 3 Haziran 1925'te kapatıldı.",u:5},
+  {q:"Atatürk hangi tarihte vefat etmiştir?",opts:["10 Kasım 1938","23 Nisan 1920","29 Ekim 1923","19 Mayıs 1919"],c:0,ex:"Atatürk 10 Kasım 1938 saat 09:05'te Dolmabahçe Sarayı'nda hayata gözlerini yumdu.",u:7},
+  {q:"Tevhid-i Tedrisat Kanunu ne anlama gelir?",opts:["Vergi Birliği Kanunu","Öğretimin Birleştirilmesi Kanunu","Harf İnkılabı Kanunu","Soyadı Kanunu"],c:1,ex:"Tevhid-i Tedrisat, 3 Mart 1924'te çıkan ve tüm okulları Millî Eğitim'e bağlayan kanundur.",u:4},
+  {q:"Kâzım Karabekir Paşa hangi cephede başarı kazandı?",opts:["Batı Cephesi","Güney Cephesi","Doğu Cephesi (Ermenilere Karşı)","Çanakkale Cephesi"],c:2,ex:"Kâzım Karabekir Doğu Cephesi'nde Ermeni kuvvetlerini yenilgiye uğrattı; Gümrü Antlaşması'nı imzaladı.",u:3},
+  {q:"Osmanlı Devleti Birinci Dünya Savaşı'nda hangi blokla yer aldı?",opts:["İtilaf Devletleri","İttifak Devletleri","Tarafsız","Her ikisiyle dönüşümlü"],c:1,ex:"Osmanlı, Almanya ve Avusturya-Macaristan'dan oluşan İttifak Devletleri safında savaştı.",u:2},
+  {q:"Birinci Meşrutiyet hangi belgeyle ilan edilmiştir?",opts:["Tanzimat Fermanı","Islahat Fermanı","Kanun-u Esasi","Misakımillî"],c:2,ex:"Birinci Meşrutiyet 1876'da Kanun-u Esasi'nin ilanıyla başladı.",u:1},
+  {q:"Türkiye Milletler Cemiyeti'ne hangi tarihte üye olmuştur?",opts:["29 Ekim 1923","9 Şubat 1934","18 Temmuz 1932","20 Temmuz 1936"],c:2,ex:"Türkiye 18 Temmuz 1932'de Milletler Cemiyeti'ne katıldı.",u:6},
+  {q:"Osmanlıcılık fikrinin başarısız olmasının temel nedeni nedir?",opts:["Ekonomik sorunlar","Milliyetçilik akımının Balkanlarda ayaklanmaları kışkırtması","Harp okullarının kapatılması","Yabancı dil bilinmemesi"],c:1,ex:"Milliyetçilik akımının etkisiyle Balkanlarda çıkan ayaklanmalar Osmanlıcılık fikrini geçersiz kıldı.",u:1},
+];
+
+// ═══════════════════════════════════════════
+//                STATE & STORAGE
+// ═══════════════════════════════════════════
+let state = {
+  knownCards: {},       // cardKey → true/false
+  quizScores: {},       // unitId → {correct, total}  (cumulative, for dashboard)
+  quizHistory: {},      // unitId → [{correct, total, pct, date}, ...]
+  totalPoints: 0,
+  streak: 0,
+  lastActive: null,
+};
+
+function loadState() {
+  try { const s = localStorage.getItem('inkılap_state'); if(s) { state = JSON.parse(s); if(!state.quizHistory) state.quizHistory={}; } } catch(e){}
+}
+function saveState() {
+  try { localStorage.setItem('inkılap_state', JSON.stringify(state)); } catch(e){}
+}
+loadState();
+
+// Update streak
+const today = new Date().toDateString();
+if(state.lastActive !== today) {
+  const yesterday = new Date(Date.now()-86400000).toDateString();
+  state.streak = (state.lastActive === yesterday) ? (state.streak||0)+1 : 1;
+  state.lastActive = today;
+  saveState();
+}
+
+// ═══════════════════════════════════════════
+//                NAVIGATION
+// ═══════════════════════════════════════════
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  document.getElementById('nb-'+{dashboard:'dash',flashcards:'fc',quiz:'quiz',timeline:'tl',progress:'prog'}[name]).classList.add('active');
+  if(name==='dashboard') renderDashboard();
+  if(name==='flashcards') initFlashcards();
+  if(name==='timeline') renderTimeline();
+  if(name==='progress') renderProgress();
+  if(name==='quiz') renderQuizSetup();
+}
+
+// ═══════════════════════════════════════════
+//                DASHBOARD
+// ═══════════════════════════════════════════
+function renderDashboard() {
+  // Stats
+  const totalTerms = UNITS.reduce((a,u)=>a+u.terms.length,0);
+  const knownCount = Object.values(state.knownCards).filter(v=>v).length;
+  const totalQuizQ = Object.values(state.quizScores).reduce((a,s)=>a+s.total,0);
+  const totalQuizC = Object.values(state.quizScores).reduce((a,s)=>a+s.correct,0);
+  const pct = totalTerms?Math.round(knownCount/totalTerms*100):0;
+  document.getElementById('dash-stats').innerHTML = `
+    <div class="stat-card"><div class="stat-num">${pct}%</div><div class="stat-lbl">Genel Ustalık</div></div>
+    <div class="stat-card"><div class="stat-num">${knownCount}<span style="font-size:1rem;color:var(--text2)">/${totalTerms}</span></div><div class="stat-lbl">Öğrenilen Kavram</div></div>
+    <div class="stat-card"><div class="stat-num">${totalQuizQ?Math.round(totalQuizC/totalQuizQ*100):0}%</div><div class="stat-lbl">Sınav Başarısı</div></div>
+    <div class="stat-card"><div class="stat-num">${state.streak||0}🔥</div><div class="stat-lbl">Günlük Seri</div></div>`;
+  // Units
+  document.getElementById('units-grid').innerHTML = UNITS.map(u=>{
+    const known = u.terms.filter((_,i)=>state.knownCards[`${u.id}_${i}`]).length;
+    const pct = u.terms.length ? Math.round(known/u.terms.length*100) : 0;
+    const barCol = pct>=80?'var(--green2)':pct>=50?'var(--gold2)':'var(--red2)';
+    return `<div class="unit-card u${u.id}" onclick="goLearnUnit(${u.id})">
+      <div class="unit-num">ÜNİTE ${u.id}</div>
+      <div class="unit-title">${u.icon} ${u.title}</div>
+      <div class="unit-meta">
+        <span>📖 ${u.terms.length} kavram</span>
+        <span>📅 ${u.events.length} olay</span>
+      </div>
+      <div class="prog-bar-wrap"><div class="prog-bar" style="width:${pct}%;background:${barCol}"></div></div>
+      <div class="prog-pct">${pct}% öğrenildi</div>
+    </div>`;
+  }).join('');
+}
+
+function goLearnUnit(uid) {
+  showPage('flashcards');
+  setTimeout(()=>setFcUnit(uid),100);
+}
+
+// ═══════════════════════════════════════════
+//                FLASHCARDS
+// ═══════════════════════════════════════════
+let fcCards = [], fcIndex = 0, fcUnit = 'all';
+
+function initFlashcards() {
+  const f = document.getElementById('fc-filter');
+  f.innerHTML = `<button onclick="setFcUnit('all')" id="fc-all" class="active">Tümü</button>` +
+    UNITS.map(u=>`<button onclick="setFcUnit(${u.id})" id="fc-u${u.id}">${u.icon} Ünite ${u.id}</button>`).join('');
+  setFcUnit(fcUnit);
+}
+
+function setFcUnit(uid) {
+  fcUnit = uid;
+  document.querySelectorAll('#fc-filter button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(uid==='all'?'fc-all':`fc-u${uid}`)?.classList.add('active');
+  if(uid==='all') fcCards = UNITS.flatMap((u,ui)=>u.terms.map((t,i)=>({...t,uid:u.id,idx:i,key:`${u.id}_${i}`})));
+  else { const u = UNITS.find(x=>x.id==uid); fcCards = u.terms.map((t,i)=>({...t,uid:u.id,idx:i,key:`${u.id}_${i}`})); }
+  fcIndex=0; renderCard();
+}
+
+function renderCard() {
+  if(!fcCards.length) return;
+  const c = fcCards[fcIndex];
+  document.getElementById('card-tag').textContent = `Ünite ${c.uid} – Kavram`;
+  document.getElementById('card-term').textContent = c.front;
+  document.getElementById('card-meaning').textContent = c.back;
+  document.getElementById('card-hint').textContent = c.key in state.knownCards ? (state.knownCards[c.key]?'✓ Biliyorsun':'✗ Tekrar Çalış') : 'Kartı çevirmek için tıklayın';
+  document.getElementById('fc-counter').textContent = `${fcIndex+1} / ${fcCards.length}`;
+  document.getElementById('card-scene').classList.remove('flipped');
+  // progress
+  const known = fcCards.filter(c=>state.knownCards[c.key]).length;
+  const pct = Math.round(known/fcCards.length*100);
+  document.getElementById('fc-pb').style.width = pct+'%';
+  document.getElementById('fc-known-count').textContent = `✓ Biliyor: ${known}`;
+  document.getElementById('fc-remaining').textContent = `Kalan: ${fcCards.length-known}`;
+}
+
+function flipCard() { document.getElementById('card-scene').classList.toggle('flipped'); }
+function nextCard() { if(fcCards.length){fcIndex=(fcIndex+1)%fcCards.length; renderCard();} }
+function prevCard() { if(fcCards.length){fcIndex=(fcIndex-1+fcCards.length)%fcCards.length; renderCard();} }
+
+function markCard(known) {
+  if(!fcCards.length) return;
+  if(!known) {
+    // "Bilmiyorum" → doğrudan işaretle ve geç
+    const c = fcCards[fcIndex];
+    state.knownCards[c.key] = false;
+    saveState();
+    renderCard();
+    nextCard();
+    return;
+  }
+  // "Biliyorum" → önce doğrulama sorusu göster
+  openVerify();
+}
+
+// ─── VERIFY ───────────────────────────────────
+let verifyCorrectIdx = -1;
+
+function openVerify() {
+  const c = fcCards[fcIndex];
+  // Doğru cevap: bu kartın anlamı
+  const correct = c.back;
+  // Yanlış seçenekler: aynı ünite dışından 2 farklı kart
+  const pool = UNITS.flatMap(u=>u.terms).filter(t=>t.back!==correct);
+  const wrongs = shuffle(pool).slice(0,2).map(t=>t.back);
+  const opts = shuffle([correct, ...wrongs]);
+  verifyCorrectIdx = opts.indexOf(correct);
+
+  document.getElementById('verify-q').textContent =
+    `"${c.front}" kavramının doğru anlamı aşağıdakilerden hangisidir?`;
+
+  document.getElementById('verify-opts').innerHTML = opts.map((o,i)=>
+    `<button class="verify-opt" onclick="checkVerify(${i},${verifyCorrectIdx},'${c.key}')" id="vopt-${i}">
+      <span style="font-weight:700;margin-right:8px;opacity:.6">${String.fromCharCode(65+i)})</span>${o}
+    </button>`
+  ).join('');
+
+  document.getElementById('verify-feedback').style.display='none';
+  document.getElementById('verify-continue').style.display='none';
+  document.getElementById('verify-overlay').classList.add('open');
+}
+
+function checkVerify(chosen, correct, cardKey) {
+  // Tüm butonları devre dışı bırak
+  document.querySelectorAll('.verify-opt').forEach(b=>b.disabled=true);
+  const fb = document.getElementById('verify-feedback');
+  const cont = document.getElementById('verify-continue');
+
+  if(chosen === correct) {
+    document.getElementById(`vopt-${chosen}`).classList.add('v-correct');
+    fb.className='verify-feedback ok';
+    fb.innerHTML='✅ <strong>Doğru!</strong> Bu kavramı öğrendin. Tebrikler! +10 puan kazandın.';
+    cont.textContent='Devam Et →';
+    cont.style.background='var(--green)';
+    // Öğrenildi olarak işaretle
+    const prev = state.knownCards[cardKey];
+    state.knownCards[cardKey] = true;
+    if(!prev) state.totalPoints = (state.totalPoints||0)+10;
+    saveState();
+    showToast('+10 puan! 🏆');
+  } else {
+    document.getElementById(`vopt-${chosen}`).classList.add('v-wrong');
+    document.getElementById(`vopt-${correct}`).classList.add('v-correct');
+    fb.className='verify-feedback fail';
+    fb.innerHTML='❌ <strong>Yanlış!</strong> Doğru cevap yeşil ile işaretlendi. Kartı tekrar çalış!';
+    cont.textContent='Tekrar Çalış →';
+    cont.style.background='var(--red)';
+    // Bilinmiyor olarak işaretle
+    state.knownCards[cardKey] = false;
+    saveState();
+  }
+  fb.style.display='block';
+  cont.style.display='block';
+}
+
+function closeVerify() {
+  document.getElementById('verify-overlay').classList.remove('open');
+  renderCard();
+  nextCard();
+}
+
+function shuffle(arr) { const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+
+// ═══════════════════════════════════════════
+//                QUIZ
+// ═══════════════════════════════════════════
+let quizQ=[], quizIdx=0, quizScore=0, quizWrong=0, quizSel=-1;
+
+function renderQuizSetup() {
+  document.getElementById('quiz-setup-area').style.display='block';
+  document.getElementById('quiz-question-area').style.display='none';
+  document.getElementById('quiz-result-area').style.display='none';
+  document.getElementById('quiz-unit-opts').innerHTML =
+    `<div class="quiz-opt-card selected" id="qo-all" onclick="selectQUnit('all',this)">
+      <div class="qoc-icon">🌟</div><div class="qoc-title">Tüm Üniteler</div>
+      <div class="qoc-desc">Karma sorular</div></div>` +
+    UNITS.map(u=>`<div class="quiz-opt-card" id="qo-${u.id}" onclick="selectQUnit(${u.id},this)">
+      <div class="qoc-icon">${u.icon}</div><div class="qoc-title">Ünite ${u.id}</div>
+      <div class="qoc-desc">${u.title.substring(0,28)}…</div></div>`).join('');
+}
+
+let selQUnit='all';
+function selectQUnit(uid,el) {
+  selQUnit=uid;
+  document.querySelectorAll('.quiz-opt-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function buildEventQuestions() {
+  const q = [];
+  UNITS.forEach(u=>{
+    u.events.forEach(ev=>{
+      if(ev.date) q.push({
+        q:`"${ev.ev}" hangi tarihte gerçekleşmiştir?`,
+        opts: shuffle([ev.date, fakeDate(), fakeDate(), fakeDate()]),
+        c_val: ev.date,
+        ex: ev.det||`${ev.ev}: ${ev.date}`, u:u.id
+      });
+    });
+  });
+  return q.map(q=>({...q,c:q.opts.indexOf(q.c_val)}));
+}
+
+function fakeDate() {
+  const dates=["1919","1920","1921","1922","1923","1924","1925","1926","1928","1930","1932","1934","1936","1937","1938","1939","1940","1945","1946","1950","3 Mart 1924","29 Ekim 1923","30 Ekim 1918","23 Nisan 1920","24 Temmuz 1923","20 Temmuz 1936","9 Şubat 1934"];
+  return dates[Math.floor(Math.random()*dates.length)];
+}
+
+function buildTermQuestions() {
+  const q = [];
+  UNITS.forEach(u=>{
+    u.terms.forEach(t=>{
+      const wrongs = UNITS.flatMap(x=>x.terms).filter(x=>x.front!==t.front).map(x=>x.back);
+      const opts = shuffle([t.back, ...shuffle(wrongs).slice(0,3)]);
+      q.push({q:`"${t.front}" kavramının anlamı nedir?`, opts, c:opts.indexOf(t.back), ex:`${t.front}: ${t.back}`, u:u.id});
+    });
+  });
+  return q;
+}
+
+function startQuiz() {
+  const count = parseInt(document.getElementById('q-count').value);
+  const type = document.getElementById('q-type').value;
+  let pool = [];
+  let basePool = [...QUIZ_POOL];
+  if(type!=='event') basePool = [...basePool, ...buildTermQuestions()];
+  if(type!=='term') basePool = [...basePool, ...buildEventQuestions()];
+  if(selQUnit !== 'all') basePool = basePool.filter(q=>q.u==selQUnit||!q.u);
+  quizQ = shuffle(basePool).slice(0,Math.min(count,basePool.length));
+  if(!quizQ.length){alert('Bu seçim için yeterli soru bulunamadı.'); return;}
+  quizIdx=0; quizScore=0; quizWrong=0; quizSel=-1;
+  document.getElementById('quiz-setup-area').style.display='none';
+  document.getElementById('quiz-question-area').style.display='block';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  if(quizIdx>=quizQ.length){showResult(); return;}
+  const q = quizQ[quizIdx];
+  const pct = Math.round(quizIdx/quizQ.length*100);
+  document.getElementById('quiz-question-area').innerHTML = `
+    <div class="quiz-top">
+      <span class="quiz-qnum">Soru ${quizIdx+1} / ${quizQ.length}</span>
+      <span class="quiz-score-live">✓ ${quizScore} doğru</span>
+    </div>
+    <div class="quiz-bar"><div class="quiz-bar-fill" style="width:${pct}%"></div></div>
+    <div class="quiz-q">${q.q}</div>
+    <div class="quiz-choices">
+      ${q.opts.map((o,i)=>`<button class="quiz-choice" onclick="selectAnswer(${i})">${String.fromCharCode(65+i)}) ${o}</button>`).join('')}
+    </div>
+    <div class="quiz-explanation" id="quiz-exp">${q.ex||''}</div>
+    <button class="btn-primary quiz-next-btn" id="quiz-next" onclick="nextQuestion()" style="display:none;margin-top:16px">
+      ${quizIdx+1<quizQ.length?'Sonraki Soru →':'Sonuçları Gör 🏆'}
+    </button>`;
+}
+
+function selectAnswer(i) {
+  if(document.querySelectorAll('.quiz-choice')[0].disabled) return;
+  quizSel=i;
+  const q = quizQ[quizIdx];
+  document.querySelectorAll('.quiz-choice').forEach((b,j)=>{
+    b.disabled=true;
+    if(j===q.c) b.classList.add('correct');
+    else if(j===i && i!==q.c) b.classList.add('wrong');
+  });
+  if(i===q.c){quizScore++;state.totalPoints=(state.totalPoints||0)+10; showToast('+10 puan! ✓');}
+  else quizWrong++;
+  document.getElementById('quiz-exp').style.display='block';
+  document.getElementById('quiz-next').style.display='inline-block';
+  // Update quiz scores
+  const uid = q.u||0;
+  if(!state.quizScores[uid]) state.quizScores[uid]={correct:0,total:0};
+  state.quizScores[uid].total++;
+  if(i===q.c) state.quizScores[uid].correct++;
+  saveState();
+}
+
+function nextQuestion() { quizIdx++; renderQuestion(); }
+
+function showResult() {
+  const pct = Math.round(quizScore/quizQ.length*100);
+  const cls = pct>=80?'excellent':pct>=50?'good':'poor';
+  const msg = pct>=80?'Mükemmel! 🏆':pct>=50?'İyi gidiyorsun! 💪':'Tekrar çalış! 📚';
+  // Save this attempt to quizHistory
+  const uid = selQUnit==='all'?'all':selQUnit;
+  if(!state.quizHistory[uid]) state.quizHistory[uid]=[];
+  state.quizHistory[uid].push({correct:quizScore,total:quizQ.length,pct,date:new Date().toLocaleDateString('tr-TR')});
+  saveState();
+  // Build attempt history snippet
+  const hist = state.quizHistory[uid];
+  const attemptNo = hist.length;
+  const bestPct = Math.max(...hist.map(h=>h.pct));
+  document.getElementById('quiz-question-area').style.display='none';
+  document.getElementById('quiz-result-area').style.display='block';
+  document.getElementById('quiz-result-area').innerHTML = `
+    <div class="result-circle ${cls}"><div>${pct}%</div><div style="font-size:.8rem;font-weight:400">başarı</div></div>
+    <h2 style="margin-bottom:8px">${msg}</h2>
+    <p style="color:var(--text2);margin-bottom:4px">${quizQ.length} sorudan ${quizScore} doğru</p>
+    <p style="color:var(--text2);font-size:12px;margin-bottom:20px">Bu üniteden ${attemptNo}. sınav · En iyi: %${bestPct}</p>
+    <div class="result-breakdown">
+      <div class="rb-item"><div class="rb-num" style="color:var(--green2)">${quizScore}</div><div class="rb-lbl">Doğru</div></div>
+      <div class="rb-item"><div class="rb-num" style="color:var(--red2)">${quizWrong}</div><div class="rb-lbl">Yanlış</div></div>
+      <div class="rb-item"><div class="rb-num" style="color:var(--gold2)">${state.totalPoints||0}</div><div class="rb-lbl">Toplam Puan</div></div>
+    </div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:8px">
+      <button class="btn-primary" onclick="startQuiz()">🔄 Tekrar Dene</button>
+      <button class="btn-primary" style="background:var(--card2)" onclick="renderQuizSetup()">⚙️ Yeni Ayarlar</button>
+    </div>`;
+}
+
+// ═══════════════════════════════════════════
+//                TIMELINE
+// ═══════════════════════════════════════════
+const TL_CATS = {
+  "antlaşma":"Antlaşma","savaş":"Savaş","inkılap":"İnkılap",
+  "kuruluş":"Kuruluş","politika":"Politika","olay":"Olay"
+};
+let tlFilterUnit = 'all';
+
+function getEvtCategory(ev) {
+  const t = ev.ev.toLowerCase()+' '+(ev.det||'').toLowerCase();
+  if(t.includes('antlaşma')||t.includes('sözleşme')||t.includes('pakt')||t.includes('antant')) return 'antlaşma';
+  if(t.includes('savaş')||t.includes('muharebe')||t.includes('taarruz')||t.includes('cephe')) return 'savaş';
+  if(t.includes('kanun')||t.includes('kaldırıldı')||t.includes('ilan')||t.includes('harf')||t.includes('inkılap')) return 'inkılap';
+  if(t.includes('kuruldu')||t.includes('kurulum')||t.includes('açıldı')||t.includes('meclisi')) return 'kuruluş';
+  return 'olay';
+}
+
+function renderTimeline() {
+  const f = document.getElementById('tl-filter');
+  f.innerHTML = `<button onclick="setTlUnit('all')" id="tl-all" class="active">Tümü</button>` +
+    UNITS.map(u=>`<button onclick="setTlUnit(${u.id})" id="tl-u${u.id}">${u.icon} Ünite ${u.id}</button>`).join('');
+  buildTimeline();
+}
+
+function setTlUnit(uid) {
+  tlFilterUnit=uid;
+  document.querySelectorAll('#tl-filter button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(uid==='all'?'tl-all':`tl-u${uid}`)?.classList.add('active');
+  buildTimeline();
+}
+
+function buildTimeline() {
+  let evts = UNITS.flatMap(u=>u.events.map(e=>({...e,uid:u.id,ucolor:u.color})));
+  if(tlFilterUnit!=='all') evts=evts.filter(e=>e.uid==tlFilterUnit);
+  const q = document.getElementById('tl-search')?.value?.toLowerCase()||'';
+  if(q) evts=evts.filter(e=>(e.ev+e.date+(e.det||'')).toLowerCase().includes(q));
+  const tl = document.getElementById('timeline-list');
+  if(!evts.length){tl.innerHTML='<div style="color:var(--text2);text-align:center;padding:40px">Sonuç bulunamadı.</div>';return;}
+  tl.innerHTML = evts.map((e,i)=>{
+    const cat=getEvtCategory(e);
+    return `<div class="tl-item" onclick="toggleTlItem(this)">
+      <div class="tl-dot" style="background:${e.ucolor};border-color:${e.ucolor}"></div>
+      <div class="tl-body" style="border-left-color:${e.ucolor}">
+        <div class="tl-date" style="color:${e.ucolor}">${e.date}</div>
+        <div class="tl-event">${e.ev}</div>
+        ${e.det?`<div class="tl-detail">${e.det}</div>`:''}
+        <span class="tl-tag cat-${cat}" style="background:rgba(255,255,255,.05)">${TL_CATS[cat]}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterTimeline(){buildTimeline();}
+function toggleTlItem(el){el.classList.toggle('expanded');}
+
+// ═══════════════════════════════════════════
+//                PROGRESS
+// ═══════════════════════════════════════════
+function renderProgress() {
+  document.getElementById('streak-num').textContent = state.streak||0;
+  document.getElementById('total-pts').textContent = state.totalPoints||0;
+  document.getElementById('progress-grid').innerHTML = UNITS.map(u=>{
+    const termKnown = u.terms.filter((_,i)=>state.knownCards[`${u.id}_${i}`]).length;
+    const termPct = u.terms.length?Math.round(termKnown/u.terms.length*100):0;
+    const qs = state.quizScores[u.id]||{correct:0,total:0};
+    const qPct = qs.total?Math.round(qs.correct/qs.total*100):0;
+    const hist = state.quizHistory&&state.quizHistory[u.id]||[];
+    const attempts = hist.length;
+    const bestPct = attempts?Math.max(...hist.map(h=>h.pct)):null;
+    const lastPct = attempts?hist[hist.length-1].pct:null;
+    const barT = termPct>=80?'var(--green2)':termPct>=50?'var(--gold2)':'var(--blue2)';
+    const barQ = (bestPct!=null?(bestPct>=80?'var(--green2)':bestPct>=50?'var(--gold2)':'var(--red2)'):'var(--text2)');
+    const cells = u.terms.map((_,i)=>{
+      const k = state.knownCards[`${u.id}_${i}`];
+      return `<div class="mastery-cell ${k===true?'known':k===false?'unknown':''}" title="${u.terms[i].front}">
+        ${k===true?'✓':k===false?'✗':'·'}
+      </div>`;
+    }).join('');
+    return `<div class="prog-unit-card">
+      <div class="puc-top">
+        <div><div style="font-size:11px;color:var(--text2)">Ünite ${u.id}</div>
+        <div class="puc-title">${u.icon} ${u.title}</div></div>
+        <div class="puc-badge">${termPct>=80?'🏆':termPct>=50?'⭐':'📚'}</div>
+      </div>
+      <div class="puc-bars">
+        <div class="puc-bar-row">
+          <div class="puc-bar-lbl">Kavramlar</div>
+          <div class="puc-bar-bg"><div class="puc-bar-fill" style="width:${termPct}%;background:${barT}"></div></div>
+          <div class="puc-bar-pct">${termPct}%</div>
+        </div>
+        <div class="puc-bar-row">
+          <div class="puc-bar-lbl">Sınav (En İyi)</div>
+          <div class="puc-bar-bg"><div class="puc-bar-fill" style="width:${bestPct!=null?bestPct:0}%;background:${barQ}"></div></div>
+          <div class="puc-bar-pct">${bestPct!=null?'%'+bestPct:'—'}</div>
+        </div>
+        ${attempts>0?`<div style="font-size:11px;color:var(--text2);margin-top:4px">📝 ${attempts} sınav · Son: %${lastPct}</div>`:''}
+      </div>
+      <div style="font-size:11px;color:var(--text2);margin-top:10px">Kart Durumu:</div>
+      <div class="mastery-row">${cells}</div>
+    </div>`;
+  }).join('');
+}
+
+function resetProgress() {
+  state={knownCards:{},quizScores:{},quizHistory:{},totalPoints:0,streak:0,lastActive:new Date().toDateString()};
+  saveState(); renderProgress(); renderDashboard(); showToast('İlerleme sıfırlandı');
+}
+
+// ═══════════════════════════════════════════
+//                TOAST
+// ═══════════════════════════════════════════
+let toastTimer;
+function showToast(msg) {
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+// ═══════════════════════════════════════════
+//                INIT
+// ═══════════════════════════════════════════
+
+// Overlay dışına tıklanınca kapat (sadece cevap verilmişse)
+document.getElementById('verify-overlay').addEventListener('click', function(e){
+  if(e.target === this && document.getElementById('verify-continue').style.display !== 'none') closeVerify();
+});
+
+renderDashboard();
+</script>
+</body>
+</html>
