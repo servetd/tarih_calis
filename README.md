@@ -4,7 +4,7 @@ LGS sınavına hazırlık için geliştirilmiş interaktif öğrenme uygulaması
 
 ## 🌐 Canlı Uygulama
 
-👉 **[Uygulamayı Aç](https://KULLANICI_ADINIZ.github.io/REPO_ADINIZ/)**
+👉 **[Uygulamayı Aç](https://servetd.github.io/tarih_calis/)**
 
 > *(GitHub Pages'i etkinleştirdikten sonra yukarıdaki bağlantıyı kendi adresinizle güncelleyin)*
 
